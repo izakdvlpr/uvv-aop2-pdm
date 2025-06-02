@@ -8,14 +8,18 @@ import { AuthProvider } from './contexts/AuthContext.js'
 import { LoginScreen } from './screens/LoginScreen.js';
 import { PointListScreen } from './screens/PointListScreen.js';
 import { RentalListScreen } from './screens/RentalListScreen.js';
-import { PointDetailsScreen } from './screens/PointDetailsScreen';
+import { PointDetailsScreen } from './screens/PointDetailsScreen.js';
+import { CustomDrawerContent } from './components/CustomDrawerContent.js';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 function PointListWithDrawer() {
   return (
-    <Drawer.Navigator screenOptions={{ headerShown: false }}>
+    <Drawer.Navigator
+      screenOptions={{ headerShown: false }}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
       <Drawer.Screen name="PointListWithDrawer" component={PointListScreen} />
     </Drawer.Navigator>
   );

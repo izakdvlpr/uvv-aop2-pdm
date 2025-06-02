@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Bicycle, MapPin } from 'phosphor-react-native'
 
 import { colors } from '../config/colors.js'

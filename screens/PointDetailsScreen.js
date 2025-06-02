@@ -38,6 +38,7 @@ export function PointDetailsScreen({ navigation, route }) {
     
     const response = await createRental({
       userId,
+      paymentMethod: selectedPaymentMethod,
       vehicleId: selectedVehicle,
       startTime: startTime.toISOString(),
       endTime: new Date(startTime.getTime() + 60 * 60 * 1000).toISOString(), // 1 hour later

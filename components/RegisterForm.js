@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, View, KeyboardAvoidingView, ScrollView, Alert } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"

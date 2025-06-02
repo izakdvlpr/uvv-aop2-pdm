@@ -3,10 +3,10 @@ import MapView, { Marker } from 'react-native-maps';
 import { List, MapPin } from 'phosphor-react-native'
 import { useState, useEffect } from 'react'
 
-import { FloatingIcon } from '../components/FloatingIcon'
-import { Footer } from '../components/Footer'
-import { colors } from '../config/colors';
-import { getPoints } from '../services/api';
+import { colors } from '../config/colors.js';
+import { getPoints } from '../services/api.js';
+import { FloatingIcon } from '../components/FloatingIcon.js'
+import { Footer } from '../components/Footer.js'
 
 export function PointListScreen({ navigation }) {
   const [points, setPoints] = useState([]);

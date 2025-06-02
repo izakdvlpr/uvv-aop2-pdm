@@ -1,14 +1,12 @@
-import { View, StyleSheet, StatusBar, Platform, Text, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
-import { CaretLeft, Circle, CheckCircle, SmileySad } from 'phosphor-react-native'
+import { View, StyleSheet, StatusBar, Platform, Text, Image, Alert, ScrollView } from 'react-native';
+import { SmileySad } from 'phosphor-react-native'
 import { useEffect, useState } from 'react'
 
 import { getRentals, getVehicles } from '../services/api.js'
 import { useAuth } from '../contexts/AuthContext.js'
-import { FloatingIcon } from '../components/FloatingIcon.js'
 import { Footer } from '../components/Footer.js'
 import { colors } from '../config/colors.js';
-import { Button } from '../components/Button.js';
-import { vehicleImages, paymentMethods } from './PointDetailsScreen.js'
+import { vehicleImages } from './PointDetailsScreen.js'
 
 export function RentalListScreen({ navigation }) {
   const { userId } = useAuth();
@@ -21,20 +19,24 @@ export function RentalListScreen({ navigation }) {
     
     if (rentals.error || vehicles.error) {
       Alert.alert('Erro', 'Não foi possível carregar os alugueis. Tente novamente mais tarde.');
+      
       return;
     }
     
-    const rentalsWithVehicles = rentals.data.map(rental => {
-      const vehicle = vehicles.data.find(v => v.name === rental.vehicle_id);
-      
-      return {
-        ...rental,
-        vehicle: vehicle ? {
-          ...vehicle,
-          image: vehicleImages[vehicle.image_path] || null
-        } : null
-      };
-    });
+    const rentalsWithVehicles = rentals.data
+      .filter(rental => rental.user_id === userId)
+      .sort((a, b) => new Date(b.start_time) - new Date(a.start_time))
+      .map(rental => {
+        const vehicle = vehicles.data.find(v => v.name === rental.vehicle_id);
+        
+        return {
+          ...rental,
+          vehicle: vehicle ? {
+            ...vehicle,
+            image: vehicleImages[vehicle.image_path] || null
+          } : null
+        };
+      });
     
     setRentals(rentalsWithVehicles);
   }
@@ -68,8 +70,9 @@ export function RentalListScreen({ navigation }) {
             {rentals.map((rental, index) => (
               <View style={styles.rentalItem} key={index + 1}>
                 <View style={styles.rentalCard}>
+                  <Text style={styles.rentalDescription}>#{index + 1}</Text>
                   <Text style={styles.rentalTitle}>{rental.vehicle.name}</Text>
-                  <Text style={styles.rentalSubtitle}>R${rental.vehicle.price}</Text>
+                  <Text style={styles.rentalSubtitle}>R${rental.vehicle.price} ({rental.payment_method})</Text>
                   <Text style={styles.rentalDescription}>{new Date(rental.start_time).toLocaleString('pt-BR')}</Text>
                   <Text style={styles.rentalDescription}>{new Date(rental.end_time).toLocaleString('pt-BR')}</Text>
                 </View>
